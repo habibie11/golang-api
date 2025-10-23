@@ -2,12 +2,12 @@ package user
 
 import "golang.org/x/crypto/bcrypt"
 
-type RegisterUserInput struct {
-	Name       string
-	Occupation string
-	Email      string
-	Password   string
-}
+// type RegisterUserInput struct {
+// 	Name       string
+// 	Occupation string
+// 	Email      string
+// 	Password   string
+// }
 
 type Service interface {
 	RegisterUser(input RegisterUserInput) (User, error)
