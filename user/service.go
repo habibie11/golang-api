@@ -6,10 +6,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// inisial kontrak antara service dan repository cth : method apa saja yg dibutuhkan service dr repository, inisial juga return nya	apa
 type Service interface {
 	RegisterUser(input RegisterUserInput) (User, error)
 	LoginInput(input LoginInput) (User, error)
 	IsEmailAvailable(input CheckEmailInput) (bool, error)
+	SaveAvatar(ID int, fileLocation string) (User, error)
 }
 
 type service struct {
@@ -77,4 +79,24 @@ func (s *service) IsEmailAvailable(input CheckEmailInput) (bool, error) {
 	}
 
 	return false, nil
+}
+
+func (s *service) SaveAvatar(ID int, fileLocation string) (User, error) {
+	// dapatkan user berdasarkan ID
+	// update atribut avatar file name di model user
+	// simpan perubahan user ke database melalui repository
+	
+	user, err := s.repository.FindByID(ID)
+	if err != nil {
+		return user, err
+	}
+
+	user.AvatarFileName = fileLocation
+
+	updatedUser, err := s.repository.Update(user)
+	if err != nil {
+		return updatedUser, err
+	}
+
+	return updatedUser, nil
 }

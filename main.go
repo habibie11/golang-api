@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bwastartup/auth"
 	"bwastartup/handler"
 	"bwastartup/user"
 	"log"
@@ -29,14 +30,20 @@ func main() {
   // service punya dependency repository
   userService := user.NewService(userRepository)
 
+  // userService.SaveAvatar(1, "images/avatar1.png")
+
+  // inisial jwt ke var
+  authService := auth.NewService()
+
   // handler punya dependency service
-  userHandler := handler.NewUserHandler(userService)
+  userHandler := handler.NewUserHandler(userService, authService)
 
   router := gin.Default()
   api := router.Group("/api/v1")
   api.POST("/users", userHandler.RegisterUser)
   api.POST("/sessions", userHandler.Login)
   api.POST("/email_checkers", userHandler.CheckEmailAvailability)
+  api.POST("/avatars", userHandler.UploadAvatar)
 
   router.Run()
 }
