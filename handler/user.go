@@ -169,7 +169,8 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 	}
 
 	// hardcode user ID, later pakai JWT
-	userID := 1
+	currentUser := c.MustGet("currentUser").(user.User)
+	userID := currentUser.ID
 
 	_, err = h.userService.SaveAvatar(userID, path)
 	if err != nil {
